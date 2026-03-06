@@ -21,7 +21,7 @@ import LikedPosts from "../pages/LikedPosts";
 import MyPage from "../pages/mypage";
 import MyPosts from "../pages/MyPosts";
 import MyComments from "../pages/MyComments";
-
+import PrivacyPolicy from "../pages/PrivacyPolicy";
 /* 상담 */
 import GeneralConsult from "../pages/GeneralConsult";
 import QuickStart from "../pages/QuickStart";
@@ -103,7 +103,7 @@ export default function Router() {
           <Route path="/waiting" element={<WaitingScreen />} />
 
           <Route path="/chat/:id" element={<ChatRoom />} />
-
+<Route path="/policy" element={<PrivacyPolicy />} />
         </Route>
 
       </Routes>
