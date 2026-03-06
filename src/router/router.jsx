@@ -11,18 +11,34 @@ import Nickname from "../auth/signup";
 import PhoneInfo from "../auth/phone-info";
 import VerifyScreen from "../auth/verify";
 
+import AuthGuard from "../components/AuthGuard";
+
 export default function Router() {
   return (
     <BrowserRouter>
-
       <Routes>
 
         {/* 메인 */}
         <Route path="/" element={<Home />} />
 
         {/* 커뮤니티 */}
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/:id" element={<PostDetail />} />
+        <Route
+          path="/community"
+          element={
+            <AuthGuard>
+              <Community />
+            </AuthGuard>
+          }
+        />
+
+        <Route
+          path="/community/:id"
+          element={
+            <AuthGuard>
+              <PostDetail />
+            </AuthGuard>
+          }
+        />
 
         {/* 앱 설치 */}
         <Route path="/install" element={<Install />} />
@@ -34,7 +50,6 @@ export default function Router() {
         <Route path="/auth/verify" element={<VerifyScreen />} />
 
       </Routes>
-
     </BrowserRouter>
   );
 }
