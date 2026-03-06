@@ -32,7 +32,8 @@ export default function BottomNav() {
       label: "상담",
       path: "/chat",
       icon: IoChatbubbleOutline,
-      activeIcon: IoChatbubble
+      activeIcon: IoChatbubble,
+      highlight: true
     },
     {
       label: "내정보",
@@ -43,52 +44,62 @@ export default function BottomNav() {
   ];
 
   return (
-    <div
+    <nav
       style={{
         position: "fixed",
         bottom: 0,
         left: 0,
         right: 0,
-        height: 62,
+        height: 68,
+        paddingBottom: "env(safe-area-inset-bottom)",
         background: "#FFFFFF",
         borderTop: "1px solid #E5E7EB",
         display: "flex",
         justifyContent: "space-around",
         alignItems: "center",
-        zIndex: 100
+        zIndex: 1000
       }}
     >
+
       {menus.map((menu) => {
 
         const active = location.pathname.startsWith(menu.path);
         const Icon = active ? menu.activeIcon : menu.icon;
 
         return (
-          <div
+          <button
             key={menu.path}
             onClick={() => navigate(menu.path)}
             style={{
+              background: "none",
+              border: "none",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               cursor: "pointer",
-              color: active ? "#222222" : "#B0B3BA"
+              color: active ? "#4F46E5" : "#9CA3AF",
+              transform: menu.highlight ? "translateY(-4px)" : "none"
             }}
           >
-            <Icon size={24} />
 
-            <div
+            <Icon size={menu.highlight ? 22 : 24} />
+
+            <span
               style={{
                 fontSize: 11,
-                marginTop: 2,
-                fontWeight: 500
+                marginTop: 4,
+                fontWeight: active ? 700 : 500
               }}
             >
               {menu.label}
-            </div>
-          </div>
+            </span>
+
+          </button>
         );
+
       })}
-    </div>
+
+    </nav>
   );
+
 }

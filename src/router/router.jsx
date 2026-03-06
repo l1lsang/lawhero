@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import BottomNavLayout from "../components/BottomNav";
+import AuthGuard from "../components/AuthGuard";
 
 /* 메인 */
 import Home from "../pages/Home";
@@ -38,180 +40,70 @@ import Nickname from "../auth/signup";
 import PhoneInfo from "../auth/phone-info";
 import VerifyScreen from "../auth/verify";
 
-/* 인증 가드 */
-import AuthGuard from "../components/AuthGuard";
-
 export default function Router() {
+
   return (
+
     <BrowserRouter>
 
       <Routes>
 
-        {/* ================= 공개 페이지 ================= */}
+        {/* 공개 페이지 */}
 
         <Route path="/" element={<Home />} />
         <Route path="/install" element={<Install />} />
 
-        {/* ================= 인증 ================= */}
+        {/* 인증 */}
 
         <Route path="/auth" element={<AuthLanding />} />
         <Route path="/auth/nickname" element={<Nickname />} />
         <Route path="/auth/phone" element={<PhoneInfo />} />
         <Route path="/auth/verify" element={<VerifyScreen />} />
 
-        {/* ================= BottomNav 포함 페이지 ================= */}
+        {/* 로그인 필요 + BottomNav */}
 
         <Route
-          path="/home"
           element={
             <AuthGuard>
-              <BottomNavLayout>
-                <TabHome />
-              </BottomNavLayout>
+              <BottomNavLayout />
             </AuthGuard>
           }
-        />
+        >
+
+          <Route path="/home" element={<TabHome />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/chat" element={<ChatList />} />
+          <Route path="/mypage" element={<MyPage />} />
+
+        </Route>
+
+        {/* 로그인 필요 (BottomNav 없음) */}
 
         <Route
-          path="/community"
-          element={
-            <AuthGuard>
-              <BottomNavLayout>
-                <Community />
-              </BottomNavLayout>
-            </AuthGuard>
-          }
-        />
+          element={<AuthGuard />}
+        >
 
-        <Route
-          path="/chat"
-          element={
-            <AuthGuard>
-              <BottomNavLayout>
-                <ChatList />
-              </BottomNavLayout>
-            </AuthGuard>
-          }
-        />
+          <Route path="/community/:id" element={<PostDetail />} />
+          <Route path="/community/write" element={<WritePost />} />
+          <Route path="/community/saved" element={<SavedPosts />} />
+          <Route path="/community/recent" element={<RecentPosts />} />
+          <Route path="/community/likes" element={<LikedPosts />} />
 
-        <Route
-          path="/mypage"
-          element={
-            <AuthGuard>
-              <BottomNavLayout>
-                <MyPage />
-              </BottomNavLayout>
-            </AuthGuard>
-          }
-        />
+          <Route path="/mypage/posts" element={<MyPosts />} />
+          <Route path="/mypage/comments" element={<MyComments />} />
 
-        {/* ================= BottomNav 없는 페이지 ================= */}
+          <Route path="/consult/general" element={<GeneralConsult />} />
+          <Route path="/consult/quick" element={<QuickStart />} />
+          <Route path="/waiting" element={<WaitingScreen />} />
 
-        {/* 커뮤니티 */}
-        <Route
-          path="/community/:id"
-          element={
-            <AuthGuard>
-              <PostDetail />
-            </AuthGuard>
-          }
-        />
+          <Route path="/chat/:id" element={<ChatRoom />} />
 
-        <Route
-          path="/community/write"
-          element={
-            <AuthGuard>
-              <WritePost />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/community/saved"
-          element={
-            <AuthGuard>
-              <SavedPosts />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/community/recent"
-          element={
-            <AuthGuard>
-              <RecentPosts />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/community/likes"
-          element={
-            <AuthGuard>
-              <LikedPosts />
-            </AuthGuard>
-          }
-        />
-
-        {/* 마이페이지 */}
-        <Route
-          path="/mypage/posts"
-          element={
-            <AuthGuard>
-              <MyPosts />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/mypage/comments"
-          element={
-            <AuthGuard>
-              <MyComments />
-            </AuthGuard>
-          }
-        />
-
-        {/* 상담 */}
-        <Route
-          path="/consult/general"
-          element={
-            <AuthGuard>
-              <GeneralConsult />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/consult/quick"
-          element={
-            <AuthGuard>
-              <QuickStart />
-            </AuthGuard>
-          }
-        />
-
-        <Route
-          path="/waiting"
-          element={
-            <AuthGuard>
-              <WaitingScreen />
-            </AuthGuard>
-          }
-        />
-
-        {/* 채팅 */}
-        <Route
-          path="/chat/:id"
-          element={
-            <AuthGuard>
-              <ChatRoom />
-            </AuthGuard>
-          }
-        />
+        </Route>
 
       </Routes>
 
     </BrowserRouter>
+
   );
+
 }
