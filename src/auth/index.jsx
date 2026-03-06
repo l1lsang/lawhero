@@ -46,22 +46,22 @@ export default function AuthLanding() {
 
       const snap = await getDoc(doc(db, "app_users", uid));
 
-      if (!snap.exists()) {
-        nav("/signup");
-        return;
-      }
+    if (!snap.exists()) {
+  nav("/auth/nickname");
+  return;
+}
 
-      const data = snap.data();
+const data = snap.data();
 
-      if (!data?.nickname?.trim()) {
-        nav("/signup");
-        return;
-      }
+if (!data?.nickname?.trim()) {
+  nav("/auth/nickname");
+  return;
+}
 
-      if (!data?.phoneVerified) {
-        nav("/verify");
-        return;
-      }
+if (!data?.phoneVerified) {
+  nav("/auth/verify");
+  return;
+}
 
       nav("/home");
 
@@ -89,17 +89,6 @@ export default function AuthLanding() {
           display: "block"
         }}
       />
-
-      <button
-        onClick={handleTestLogin}
-        style={{
-          padding: 16,
-          width: "100%",
-          marginBottom: 16
-        }}
-      >
-        테스트 로그인
-      </button>
 
       <button
         onClick={handleGoogleLogin}
