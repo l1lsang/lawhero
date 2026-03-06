@@ -5,11 +5,14 @@ export default function AuthGuard({ children }) {
 
   const { user, authReady } = useAuth();
 
+  const guest = localStorage.getItem("guest");
+
   if (!authReady) {
-    return null; // auth 체크 중
+    return null;
   }
 
-  if (!user) {
+  /* 로그인도 없고 게스트도 아니면 */
+  if (!user && !guest) {
     return <Navigate to="/auth" replace />;
   }
 
