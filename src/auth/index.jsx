@@ -17,14 +17,25 @@ export default function AuthLanding() {
 
   /* 이미 로그인 상태면 홈으로 이동 */
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        nav("/home");
-      }
-    });
 
-    return unsub;
-  }, [nav]);
+  const guest = localStorage.getItem("guest");
+
+  const unsub = onAuthStateChanged(auth, (user) => {
+
+    if (user) {
+      nav("/home");
+      return;
+    }
+
+    if (guest) {
+      nav("/home");
+    }
+
+  });
+
+  return unsub;
+
+}, [nav]);
 
   /* 구글 로그인 */
   const handleGoogleLogin = async () => {
@@ -120,16 +131,6 @@ export default function AuthLanding() {
           당신에게 맞는 전문가와 연결됩니다
         </p>
 
-        <img
-          src="/auth_cards.png"
-          alt="LawHero 소개"
-          style={{
-            width: "100%",
-            marginBottom: 30,
-            borderRadius: 12
-          }}
-        />
-
         {/* 구글 로그인 */}
 
         <button
@@ -155,19 +156,22 @@ export default function AuthLanding() {
         {/* 나중에 가입 */}
 
         <button
-          onClick={() => nav("/home")}
-          style={{
-            width: "100%",
-            padding: 14,
-            background: "#F3F4F6",
-            border: "none",
-            borderRadius: 10,
-            fontSize: 15,
-            cursor: "pointer"
-          }}
-        >
-          나중에 가입
-        </button>
+  onClick={() => {
+    localStorage.setItem("guest", "true");
+    nav("/home");
+  }}
+  style={{
+    width: "100%",
+    padding: 14,
+    background: "#F3F4F6",
+    border: "none",
+    borderRadius: 10,
+    fontSize: 15,
+    cursor: "pointer"
+  }}
+>
+  나중에 가입
+</button>
 
         <p
           style={{
