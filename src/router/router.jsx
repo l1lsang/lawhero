@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import BottomNavLayout from "../layouts/BottomNavLayout";
 import AuthGuard from "../components/AuthGuard";
-
+import TierGuide from "../pages/TierGuide";
 /* 메인 */
 import Home from "../pages/Home";
 import TabHome from "../pages/TabHome";
@@ -11,7 +11,7 @@ import TabHome from "../pages/TabHome";
 import Community from "../pages/Community";
 import PostDetail from "../pages/CommunityDetail";
 import WritePost from "../pages/WritePost";
-
+import Support from "../pages/support";
 /* 커뮤니티 활동 */
 import SavedPosts from "../pages/SavedPosts";
 import RecentPosts from "../pages/RecentPosts";
@@ -82,12 +82,18 @@ export default function Router() {
         <Route
           element={<AuthGuard />}
         >
-
+<Route
+  path="/support"
+  element={
+      <Support />
+   
+  }
+/><Route path="/community/tier" element={<TierGuide />} />
           <Route path="/community/:id" element={<PostDetail />} />
           <Route path="/community/write" element={<WritePost />} />
           <Route path="/community/saved" element={<SavedPosts />} />
-          <Route path="/community/recent" element={<RecentPosts />} />
-          <Route path="/community/likes" element={<LikedPosts />} />
+          <Route path="/mypage/recent" element={<RecentPosts />} />
+          <Route path="/mypage/likes" element={<LikedPosts />} />
 
           <Route path="/mypage/posts" element={<MyPosts />} />
           <Route path="/mypage/comments" element={<MyComments />} />

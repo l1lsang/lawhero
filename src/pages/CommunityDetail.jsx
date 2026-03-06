@@ -248,7 +248,7 @@ export default function CommunityDetail() {
   const handleShare = async () => {
     if (!post?.id) return;
 
-    const webUrl = `https://lawhero-one.vercel.app//community/${post.id}`;
+    const webUrl = `https://lawhero-one.vercel.app/community/${post.id}`;
     const deepLink = `lawhero://community/${post.id}`;
     const message = `${post.title}\n\n앱에서 보기: ${deepLink}\n웹에서 보기: ${webUrl}`;
 
@@ -547,7 +547,35 @@ export default function CommunityDetail() {
             <div style={{ color: "#374151", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
               {post.content}
             </div>
-
+{/* 이미지 */}
+{/* 이미지 슬라이드 */}
+{Array.isArray(post.imageUrls) && post.imageUrls.length > 0 && (
+  <div
+    style={{
+      marginTop: 14,
+      display: "flex",
+      gap: 10,
+      overflowX: "auto",
+      scrollSnapType: "x mandatory"
+    }}
+  >
+    {post.imageUrls.map((img, i) => (
+      <img
+        key={i}
+        src={img}
+        alt={`post-${i}`}
+        style={{
+          width: "100%",
+          maxWidth: 600,
+          borderRadius: 12,
+          flexShrink: 0,
+          objectFit: "cover",
+          scrollSnapAlign: "center"
+        }}
+      />
+    ))}
+  </div>
+)}
             <button onClick={toggleLike} style={likeRow}>
               <span style={{ fontSize: 18 }}>{liked ? (
   <IoHeart size={18} color="red" />

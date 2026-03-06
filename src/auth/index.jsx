@@ -1,11 +1,13 @@
 import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+
 import {
   GoogleAuthProvider,
   signInWithPopup,
+  onAuthStateChanged
 } from "firebase/auth";
 
 import { doc, getDoc } from "firebase/firestore";
-import { useState } from "react";
 import { auth, db } from "../firebase/firebase";
 
 export default function AuthLanding() {
@@ -13,10 +15,22 @@ export default function AuthLanding() {
   const nav = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  /* 이미 로그인 상태면 홈으로 이동 */
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        nav("/home");
+      }
+    });
+
+    return unsub;
+  }, [nav]);
+
   /* 구글 로그인 */
   const handleGoogleLogin = async () => {
 
     if (loading) return;
+
     setLoading(true);
 
     try {
@@ -28,6 +42,7 @@ export default function AuthLanding() {
 
       const snap = await getDoc(doc(db, "app_users", uid));
 
+      /* 신규 유저 */
       if (!snap.exists()) {
         nav("/auth/nickname");
         return;
@@ -35,23 +50,30 @@ export default function AuthLanding() {
 
       const data = snap.data();
 
+      /* 닉네임 없음 */
       if (!data?.nickname?.trim()) {
         nav("/auth/nickname");
         return;
       }
 
+      /* 전화 인증 안됨 */
       if (!data?.phoneVerified) {
         nav("/auth/verify");
         return;
       }
 
+      /* 정상 로그인 */
       nav("/home");
 
     } catch (e) {
-      console.log("GOOGLE LOGIN ERROR:", e);
+
+      console.error("GOOGLE LOGIN ERROR:", e);
       alert("구글 로그인 실패");
+
     } finally {
+
       setLoading(false);
+
     }
   };
 
@@ -100,6 +122,7 @@ export default function AuthLanding() {
 
         <img
           src="/auth_cards.png"
+          alt="LawHero 소개"
           style={{
             width: "100%",
             marginBottom: 30,
@@ -107,8 +130,11 @@ export default function AuthLanding() {
           }}
         />
 
+        {/* 구글 로그인 */}
+
         <button
           onClick={handleGoogleLogin}
+          disabled={loading}
           style={{
             width: "100%",
             padding: 14,
@@ -119,11 +145,14 @@ export default function AuthLanding() {
             fontSize: 16,
             fontWeight: 600,
             cursor: "pointer",
-            marginBottom: 12
+            marginBottom: 12,
+            opacity: loading ? 0.7 : 1
           }}
         >
-          Google로 시작하기
+          {loading ? "로그인 중..." : "Google로 시작하기"}
         </button>
+
+        {/* 나중에 가입 */}
 
         <button
           onClick={() => nav("/home")}

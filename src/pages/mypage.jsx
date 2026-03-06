@@ -3,7 +3,12 @@ import { useNavigate } from "react-router-dom";
 
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { collection, doc, onSnapshot } from "firebase/firestore";
-
+import {
+  IoTimeOutline,
+  IoHeartOutline,
+  IoChatbubbleOutline,
+  IoHeadsetOutline
+} from "react-icons/io5";
 import { auth, db } from "../firebase/firebase";
 
 import level1 from "../assets/1.png";
@@ -40,7 +45,28 @@ const quickMenus = [
 {label:"고객센터",route:"/support"}
 
 ];
-
+const menus = [
+  {
+    icon: IoTimeOutline,
+    label: "최근 본 글",
+    route: "/mypage/recent"
+  },
+  {
+    icon: IoHeartOutline,
+    label: "관심글",
+    route: "/mypage/likes"
+  },
+  {
+    icon: IoChatbubbleOutline,
+    label: "상담내역",
+    route: "/chat"
+  },
+  {
+    icon: IoHeadsetOutline,
+    label: "고객센터",
+    route: "/support"
+  }
+];
 useEffect(()=>{
 
 let unsubUser;
@@ -182,27 +208,38 @@ justifyContent:"space-between",
 marginBottom:28
 }}>
 
-{quickMenus.map((item,i)=>(
+{menus.map((menu) => {
 
-<div
-key={i}
-onClick={()=>navigate(item.route)}
-style={{
-textAlign:"center",
-cursor:"pointer"
-}}
->
+  const Icon = menu.icon;
 
-<div style={{
-fontSize:12,
-marginTop:6
-}}>
-{item.label}
-</div>
+  return (
+    <div
+      key={menu.route}
+      onClick={() => navigate(menu.route)}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        padding: "16px 20px",
+        borderBottom: "1px solid #E5E7EB",
+        cursor: "pointer",
+        gap: 14
+      }}
+    >
 
-</div>
+      <Icon size={20} color="#6B7280" />
 
-))}
+      <div
+        style={{
+          fontSize: 15,
+          fontWeight: 600
+        }}
+      >
+        {menu.label}
+      </div>
+
+    </div>
+  );
+})}
 
 </div>
 

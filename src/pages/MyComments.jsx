@@ -7,6 +7,7 @@ import {
   orderBy,
   query,
   where,
+   limit
 } from "firebase/firestore";
 
 import { auth, db } from "../firebase/firebase";

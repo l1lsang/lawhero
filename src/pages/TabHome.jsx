@@ -91,7 +91,7 @@ const categories = [
 export default function Home() {
 
   const navigate = useNavigate();
-
+const [unreadCount, setUnreadCount] = useState(0);
   const [expertPosts, setExpertPosts] = useState([]);
   const [infoPosts, setInfoPosts] = useState([]);
 
@@ -180,14 +180,6 @@ useEffect(() => {
 
 }, []);
 
-  const categories = [
-    { title: "형사", icon: icon6, field: "형사" },
-    { title: "민사", icon: icon7, field: "민사" },
-    { title: "도산/개인회생", icon: icon8, field: "도산/개인회생" },
-    { title: "이혼", icon: icon9, field: "이혼" },
-    { title: "부동산", icon: icon10, field: "부동산" }
-  ];
-
 return (
 
 <div style={{
@@ -199,34 +191,37 @@ margin:"0 auto"
 
 {/* HERO */}
 
-<div style={{
-background:"#9CC2FC",
-borderBottomLeftRadius:28,
-borderBottomRightRadius:28,
-paddingTop:90,
-paddingBottom:20
-}}>
+<div
+  style={{
+    background: "#9CC2FC",
+    borderBottomLeftRadius: 28,
+    borderBottomRightRadius: 28,
+    paddingTop: 80,
+    paddingBottom: 20,
+    position: "relative"   // ⭐ 추가
+  }}
+>
 
 {/* TOPBAR */}
 
-<div style={{
-position:"absolute",
-top:20,
-left:20,
-right:20,
-display:"flex",
-justifyContent:"space-between",
-alignItems:"center"
-}}>
+<div
+  style={{
+    position: "absolute",
+    top: 16,
+    left: 20,
+    display: "flex",
+    alignItems: "center"
+  }}
+>
 
-<img src={logo} style={{width:30}} />
-
-<div style={{display:"flex",gap:18}}>
+<img
+  src={logo}
+  style={{
+    width: 32
+  }}
+/>
 
 </div>
-
-</div>
-
 {/* HERO ROW */}
 
 <div style={{
@@ -255,160 +250,219 @@ color:"#4F46E5"
 
 </div>
 
-<img src={lawbe} style={{width:160}}/>
+<img src={lawbe} style={{width:160,zIndex:1}}/>
 
 </div>
 
 {/* 빠른 상담 */}
 
-<div style={{
-marginTop:-30,
-marginLeft:16,
-marginRight:16,
-background:"linear-gradient(90deg,#9987FF,#5F92FF)",
-borderRadius:30,
-padding:2
-}}>
+{/* 빠른 상담 */}
+<div
+  style={{
+    marginTop: -30,
+    marginLeft: 16,
+    marginRight: 16,
+    background: "linear-gradient(90deg,#9987FF,#5F92FF)",
+    borderRadius: 30,
+    padding: 2,
+    zIndex:2
+  }}
+>
 
-<div style={{
-display:"flex",
-alignItems:"center",
-background:"#F3F4F6",
-padding:"14px 12px",
-borderRadius:28
-}}>
+  <div
+    onClick={() => navigate("/consult/quick")}
+    style={{
+      display: "flex",
+      alignItems: "center",
+      background: "#F3F4F6",
+      padding: "14px 12px",
+      borderRadius: 28,
+      cursor: "pointer",
+    zIndex:9
+    }}
+  >
 
-<img src={g} style={{
-width:50,
-marginRight:16
-}}/>
+    {/* 아이콘 */}
+    <img
+      src={g}
+      style={{
+        width: 50,
+        marginRight: 16
+      }}
+    />
 
-<div style={{flex:1}}>
+    {/* 텍스트 */}
+    <div style={{ flex: 1 }}>
 
-<div style={{
-fontSize:14,
-color:"#6B7280"
-}}>
-기다릴 필요없이 법률 고민
-</div>
+      <div
+        style={{
+          fontSize: 14,
+          color: "#6B7280"
+        }}
+      >
+        기다릴 필요없이 법률 고민
+      </div>
 
-<div style={{
-fontSize:18,
-fontWeight:700
-}}>
-빠른 상담
-</div>
+      <div
+        style={{
+          fontSize: 18,
+          fontWeight: 700
+        }}
+      >
+        빠른 상담
+      </div>
 
-</div>
+    </div>
 
-<div style={{
-background:"#E5E7EB",
-padding:"12px 18px",
-borderRadius:40,
-fontWeight:700,
-color:"#4F46E5"
-}}>
-시작하기
-</div>
+    {/* 버튼 */}
+    <div
+      style={{
+        background: "#E5E7EB",
+        padding: "12px 18px",
+        borderRadius: 40,
+        fontWeight: 700,
+        color: "#4F46E5",
+        zIndex:2
+      }}
+    >
+      시작하기
+    </div>
 
-</div>
+  </div>
 
 </div>
 
 </div>
 
 {/* 추천 서비스 */}
-
-<div style={{
-fontSize:20,
-fontWeight:600,
-marginTop:20,
-marginLeft:20
-}}>
+<div
+  style={{
+    fontSize: 20,
+    fontWeight: 600,
+    marginTop: 20,
+    marginLeft: 20
+  }}
+>
 추천하는 상담 서비스
 </div>
 
-{/* 상단 2개 */}
+<div
+  style={{
+    display: "flex",
+     gap: 20 ,
+    padding: "20px 16px 0"
+  }}
+>
 
-<div style={{
-display:"flex",
-justifyContent:"space-between",
-padding:"20px 16px 0"
-}}>
-
-<div style={{
-width:"48%",
+{categories.slice(0,2).map((item)=>(
+<div
+key={item.title}
+onClick={() =>
+navigate("/consult/general", {
+state:{category:item.key}
+})
+}
+style={{
+width:"calc(50% - 10px)",
 background:"#F3F4F6",
 borderRadius:28,
 padding:20,
-position:"relative"
-}}>
+cursor:"pointer",
 
-<div style={{
-fontSize:22,
-fontWeight:800
-}}>
-형사
-</div>
+border:"1px solid #E5E7EB",
 
-<div style={{
-color:"#9CA3AF",
-marginTop:6
-}}>
-수사/처벌
-</div>
+position:"relative",   // ⭐ 중요
+minHeight:120
+}}
+>
 
-</div>
+<div>
 
-<div style={{
-width:"48%",
-background:"#F3F4F6",
-borderRadius:28,
-padding:20
-}}>
-
-<div style={{
-fontSize:22,
-fontWeight:800
-}}>
-민사
-</div>
-
-<div style={{
-color:"#9CA3AF",
-marginTop:6
-}}>
-소송/절차
-</div>
-
-</div>
-
-</div>
-
-{/* 하단 3개 */}
-
-<div style={{
-display:"flex",
-justifyContent:"space-between",
-padding:"16px"
-}}>
-
-{["도산","이혼","부동산"].map((item)=>(
-<div key={item}
+<div
 style={{
-width:"31%",
+fontSize:22,
+fontWeight:800
+}}
+>
+{item.title}
+</div>
+
+{item.sub && (
+<div
+style={{
+color:"#9CA3AF",
+marginTop:6
+}}
+>
+{item.sub}
+</div>
+)}
+
+</div>
+
+<img
+src={item.icon}
+style={{
+width:70,
+position:"absolute",
+right:12,
+bottom:10
+}}
+/>
+
+</div>
+))}
+
+</div>
+<div
+style={{
+display:"flex",
+ gap: 20 ,
+padding:"16px"
+}}
+>
+
+{categories.slice(2).map((item)=>(
+<div
+key={item.title}
+onClick={() =>
+navigate("/consult/general", {
+state:{category:item.key}
+})
+}
+style={{
+width:"calc(33.33% - 10px)",
 background:"#F3F4F6",
 borderRadius:22,
 padding:"16px",
-textAlign:"center"
-}}>
+cursor:"pointer",
 
-<div style={{
+border:"1px solid #E5E7EB",
+boxShadow:"0 2px 8px rgba(0,0,0,0.04)",
+
+position:"relative",   // ⭐ 중요
+minHeight:100
+}}
+>
+
+<div
+style={{
 fontSize:16,
 fontWeight:700
-}}>
-{item}
+}}
+>
+{item.title}
 </div>
+
+<img
+src={item.icon}
+style={{
+width:36,
+position:"absolute",
+right:10,
+bottom:10
+}}
+/>
 
 </div>
 ))}
@@ -416,8 +470,8 @@ fontWeight:700
 </div>
 
 {/* 배너 */}
-
-<div style={{
+<div
+style={{
 margin:16,
 background:"#1C4788",
 borderRadius:20,
@@ -425,37 +479,223 @@ padding:20,
 display:"flex",
 justifyContent:"space-between",
 alignItems:"center"
-}}>
+}}
+>
 
 <div>
 
-<div style={{
+<div
+style={{
 fontSize:18,
 color:"#C7D2FE"
-}}>
+}}
+>
 집을 유지하면서
 </div>
 
-<div style={{
+<div
+style={{
 fontSize:20,
 fontWeight:700,
 color:"white"
-}}>
+}}
+>
 채무 조정 하고싶다면?
 </div>
 
-<div style={{
+<div
+style={{
 color:"#ddd"
-}}>
+}}
+>
 전문가가 직접 상담
 </div>
 
 </div>
 
-<img src={bannerImg} style={{width:120}}/>
+<img
+src={bannerImg}
+style={{
+width:120
+}}
+/>
+
+</div>
+<div style={{marginTop:20}}>
+
+<div
+style={{
+fontSize:20,
+fontWeight:600,
+marginLeft:20
+}}
+>
+변호사가 답한 실제 사례
+</div>
+
+<div
+style={{
+display:"flex",
+gap:14,
+overflowX:"auto",
+padding:"16px 20px"
+}}
+>
+
+{expertPosts.map((post)=>{
+
+const config = CATEGORY_CONFIG[post.field];
+
+return(
+
+<div
+key={post.id}
+onClick={()=>navigate(`/community/${post.id}`)}
+style={{
+minWidth:220,
+background:"white",
+borderRadius:20,
+padding:16,
+cursor:"pointer",
+boxShadow:"0 4px 12px rgba(0,0,0,0.05)"
+}}
+>
+
+<div
+style={{
+fontWeight:800,
+fontSize:16,
+marginBottom:12
+}}
+>
+{post.title}
+</div>
+
+{config && (
+
+<div
+style={{
+display:"flex",
+alignItems:"center",
+gap:6
+}}
+>
+
+<img src={config.icon} style={{width:18}}/>
+
+<div
+style={{
+fontSize:13,
+color:config.color,
+fontWeight:600
+}}
+>
+{post.field} 분야
+</div>
 
 </div>
 
+)}
+
+</div>
+
+)
+
+})}
+
+</div>
+
+</div>
+<div style={{marginTop:20}}>
+
+<div
+style={{
+fontSize:20,
+fontWeight:600,
+marginLeft:20
+}}
+>
+법률 정보 자세히 보기
+</div>
+
+<div style={{padding:"16px 20px"}}>
+
+{infoPosts.map((post)=>(
+<div
+key={post.id}
+onClick={()=>navigate(`/community/${post.id}`)}
+style={{
+background:"#F9FAFB",
+borderRadius:20,
+padding:16,
+marginBottom:18,
+display:"flex",
+justifyContent:"space-between",
+alignItems:"center",
+cursor:"pointer",
+border:"1px solid #E5E7EB"
+}}
+>
+
+<div style={{display:"flex"}}>
+
+<div
+style={{
+width:64,
+height:64,
+borderRadius:16,
+background:"#E5E7EB",
+overflow:"hidden",
+marginRight:14
+}}
+>
+
+{post.imageUrl && (
+<img
+src={post.imageUrl}
+style={{
+width:"100%",
+height:"100%",
+objectFit:"cover"
+}}
+/>
+)}
+
+</div>
+
+<div>
+
+<div
+style={{
+fontSize:17,
+fontWeight:800,
+marginBottom:6
+}}
+>
+{post.title}
+</div>
+
+<div
+style={{
+fontSize:13,
+color:"#9CA3AF"
+}}
+>
+{post.field}
+</div>
+
+</div>
+
+</div>
+
+<div>›</div>
+
+</div>
+))}
+
+</div>
+
+</div>
 </div>
 
 )

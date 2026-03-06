@@ -340,7 +340,7 @@ export default function ChatList() {
         onClick={createNewChat}
         style={{
           position:"fixed",
-          bottom:30,
+          bottom:100,
           right:30,
           background:"#5B6BE8",
           color:"white",

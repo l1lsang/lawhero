@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { FiHelpCircle } from "react-icons/fi";
 import {
   collection,
   doc,
@@ -63,7 +63,7 @@ const EXPERT_FIELDS = [
 export default function Community() {
 
   const navigate = useNavigate();
-
+const nav = useNavigate(); 
   const [posts, setPosts] = useState([]);
   const [mainTab, setMainTab] = useState("experience");
 
@@ -187,9 +187,43 @@ q = query(
 
     <div className="container">
 
-      <h1 style={{ fontSize: 28, fontWeight: 700, marginBottom: 20 }}>
+      <div
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 20,
+      }}
+    >
+      <h1 style={{ fontSize: 28, fontWeight: 700 }}>
         커뮤니티
       </h1>
+
+      <button
+        onClick={() => nav("/community/tier")}
+        style={{
+          border: "none",
+          background: "none",
+          cursor: "pointer",
+        }}
+      >
+        <FiHelpCircle size={22} color="#6B7280" />
+      </button>
+        <button
+    onClick={() => nav("/community/write")}
+    style={{
+      background: "#111827",
+      color: "white",
+      border: "none",
+      padding: "8px 14px",
+      borderRadius: 8,
+      fontWeight: 600,
+      cursor: "pointer"
+    }}
+  >
+    글쓰기
+  </button>
+    </div>
 
       {/* 탭 */}
       <div
@@ -262,195 +296,286 @@ q = query(
 
   </div>
 )}
-      {/* 글 목록 */}
-      <div>
+{/* 글 목록 */}
+<div>
 
-        {posts.map((post) => (
+{/* =========================
+   일반 글 (경험 / 전문가)
+========================= */}
+{mainTab !== "info" && (
+  <div>
+    {posts.map((post) => (
+
+      <div
+        key={post.id}
+        onClick={() => navigate(`/community/${post.id}`)}
+        style={{
+          padding: "18px 0",
+          borderBottom: "1px solid #E5E7EB",
+          cursor: "pointer"
+        }}
+      >
+
+        {/* 유저 */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginBottom: 10
+          }}
+        >
 
           <div
-            key={post.id}
-            onClick={() => navigate(`/community/${post.id}`)}
             style={{
-              padding: "18px 0",
-              borderBottom: "1px solid #E5E7EB",
-              cursor: "pointer"
+              width: 36,
+              height: 36,
+              borderRadius: "50%",
+              overflow: "hidden",
+              background: "#F3F4F6",
+              marginRight: 10,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
-
-            {/* 유저 */}
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginBottom: 10
-              }}
-            >
-
-              <div
-                style={{
-                  width: 36,
-                  height: 36,
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  background: "#F3F4F6",
-                  marginRight: 10,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-
-                {authorLevels[post.uid] > 0 ? (
-
-                  <img
-                    src={getProfileImage(authorLevels[post.uid])}
-                    style={{ width: 36, height: 36 }}
-                  />
-
-                ) : (
-
-                  <IoPerson size={18} color="#9CA3AF" />
-
-                )}
-
-              </div>
-
-              <div>
-
-                <div style={{ fontWeight: 700 }}>
-                  {post.nickname || "유저"}
-                </div>
-
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "#9CA3AF"
-                  }}
-                >
-                  {post.createdAt?.toDate?.().toLocaleString?.()}
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* 제목 */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: 6
-              }}
-            >
-
-              <div style={{ display: "flex", alignItems: "center" }}>
-
-                {post.likeCount >= 10 && (
-                  <IoFlame
-                    size={16}
-                    color="#F97316"
-                    style={{ marginRight: 6 }}
-                  />
-                )}
-
-                <h3
-                  style={{
-                    fontSize: 18,
-                    fontWeight: 800,
-                    margin: 0
-                  }}
-                >
-                  {post.title}
-                </h3>
-
-              </div>
-
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleSave(post.id);
-                }}
-              >
-                {savedPosts.includes(post.id)
-                  ? <IoBookmark size={20} color="#4F46E5"/>
-                  : <IoBookmarkOutline size={20} color="#6B7280"/>
-                }
-              </div>
-
-            </div>
-
-            {/* 내용 */}
-            <p
-              style={{
-                color: "#374151",
-                marginBottom: 10
-              }}
-            >
-              {post.content?.slice(0,120)}...
-            </p>
-
-            {/* 태그 */}
-            {post.subCategory && (
-              <span
-                style={{
-                  background: "#EEF2FF",
-                  padding: "4px 10px",
-                  borderRadius: 6,
-                  fontSize: 12,
-                  fontWeight: 600,
-                  color: "#4F46E5"
-                }}
-              >
-                {post.subCategory}
-              </span>
+            {authorLevels[post.uid] > 0 ? (
+              <img
+                src={getProfileImage(authorLevels[post.uid])}
+                style={{ width: 36, height: 36 }}
+              />
+            ) : (
+              <IoPerson size={18} color="#9CA3AF" />
             )}
+          </div>
 
-            {/* 좋아요 / 댓글 */}
+          <div>
+
+            <div style={{ fontWeight: 700 }}>
+              {post.nickname || "유저"}
+            </div>
+
             <div
               style={{
-                display: "flex",
-                gap: 16,
-                marginTop: 10
+                fontSize: 12,
+                color: "#9CA3AF"
               }}
             >
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4
-                }}
-              >
-                <IoHeart
-                  size={14}
-                  color={post.likeCount >= 10 ? "#EF4444" : "#6B7280"}
-                />
-                <span>{post.likeCount || 0}</span>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 4
-                }}
-              >
-                <IoChatbubbleOutline
-                  size={14}
-                  color="#6B7280"
-                />
-                <span>{post.commentCount || 0}</span>
-              </div>
-
+              {post.createdAt?.toDate?.().toLocaleString?.()}
             </div>
 
           </div>
 
-        ))}
+        </div>
+
+        {/* 제목 */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            marginBottom: 6
+          }}
+        >
+
+          <div style={{ display: "flex", alignItems: "center" }}>
+
+            {post.likeCount >= 10 && (
+              <IoFlame
+                size={16}
+                color="#F97316"
+                style={{ marginRight: 6 }}
+              />
+            )}
+
+            <h3
+              style={{
+                fontSize: 18,
+                fontWeight: 800,
+                margin: 0
+              }}
+            >
+              {post.title}
+            </h3>
+
+          </div>
+
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              handleSave(post.id);
+            }}
+          >
+            {savedPosts.includes(post.id)
+              ? <IoBookmark size={20} color="#4F46E5"/>
+              : <IoBookmarkOutline size={20} color="#6B7280"/>
+            }
+          </div>
+
+        </div>
+
+        {/* 내용 */}
+        <p
+          style={{
+            color: "#374151",
+            marginBottom: 10
+          }}
+        >
+          {post.content?.slice(0,120)}...
+        </p>
+
+        {/* 태그 */}
+        {post.subCategory && (
+          <span
+            style={{
+              background: "#EEF2FF",
+              padding: "4px 10px",
+              borderRadius: 6,
+              fontSize: 12,
+              fontWeight: 600,
+              color: "#4F46E5"
+            }}
+          >
+            {post.subCategory}
+          </span>
+        )}
+
+        {/* 좋아요 / 댓글 */}
+        <div
+          style={{
+            display: "flex",
+            gap: 16,
+            marginTop: 10
+          }}
+        >
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4
+            }}
+          >
+            <IoHeart
+              size={14}
+              color={post.likeCount >= 10 ? "#EF4444" : "#6B7280"}
+            />
+            <span>{post.likeCount || 0}</span>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 4
+            }}
+          >
+            <IoChatbubbleOutline
+              size={14}
+              color="#6B7280"
+            />
+            <span>{post.commentCount || 0}</span>
+          </div>
+
+        </div>
 
       </div>
 
-    </div>
+    ))}
+  </div>
+)}
 
+
+{/* =========================
+   정보 탭 (카드형)
+========================= */}
+{mainTab === "info" && (
+  <div>
+
+    {posts.map((post) => (
+
+      <div
+        key={post.id}
+        onClick={() => navigate(`/community/${post.id}`)}
+        style={{
+          background: "#F9FAFB",
+          borderRadius: 16,
+          padding: 16,
+          marginBottom: 18,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          border: "1px solid #E5E7EB",
+          cursor: "pointer"
+        }}
+      >
+
+        <div style={{ display: "flex", flex: 1 }}>
+
+          {/* 이미지 */}
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: 12,
+              overflow: "hidden",
+              background: "#E5E7EB",
+              marginRight: 14
+            }}
+          >
+            {post.imageUrl && (
+              <img
+                src={post.imageUrl}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover"
+                }}
+              />
+            )}
+          </div>
+
+          {/* 텍스트 */}
+          <div style={{ flex: 1 }}>
+
+            <div
+              style={{
+                fontSize: 18,
+                fontWeight: 800,
+                marginBottom: 6
+              }}
+            >
+              {post.title}
+            </div>
+
+            <div
+              style={{
+                fontSize: 13,
+                fontWeight: 600,
+                color: "#6B7280"
+              }}
+            >
+              {post.field}
+              {post.subField && (
+                <span style={{ color: "#9CA3AF" }}>
+                  {" · "} {post.subField}
+                </span>
+              )}
+            </div>
+
+          </div>
+
+        </div>
+
+        <div style={{ color: "#D1D5DB", fontSize: 18 }}>
+          ›
+        </div>
+
+      </div>
+
+    ))}
+
+  </div>
+)}
+</div>
+</div>
   );
 }
