@@ -204,45 +204,24 @@ marginTop:4
 
 <div style={{
 display:"flex",
-justifyContent:"space-between",
+flexDirection:"column",
 marginBottom:28
 }}>
-
-{menus.map((menu) => {
-
-  const Icon = menu.icon;
-
-  return (
-    <div
-      key={menu.route}
-      onClick={() => navigate(menu.route)}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        padding: "16px 20px",
-        borderBottom: "1px solid #E5E7EB",
-        cursor: "pointer",
-        gap: 14
-      }}
-    >
-
-      <Icon size={20} color="#6B7280" />
-
-      <div
-        style={{
-          fontSize: 15,
-          fontWeight: 600
-        }}
-      >
-        {menu.label}
-      </div>
-
-    </div>
-  );
-})}
-
+  <div
+  key={menu.route}
+  onClick={() => navigate(menu.route)}
+  style={{
+    display: "flex",
+    alignItems: "center",
+    padding: "16px 20px",
+    borderBottom: "1px solid #E5E7EB",
+    cursor: "pointer",
+    gap: 14,
+    width:"100%"
+  }}
+>
+  </div>
 </div>
-
 {/* 커뮤니티 */}
 
 <div style={{color:"#9CA3AF",marginBottom:10}}>
