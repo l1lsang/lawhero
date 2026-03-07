@@ -413,14 +413,38 @@ q = query(
         </div>
 
         {/* 내용 */}
-        <p
-          style={{
-            color: "#374151",
-            marginBottom: 10
-          }}
-        >
-          {post.content?.slice(0,120)}...
-        </p>
+      <div
+  style={{
+    display: "flex",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 10
+  }}
+>
+
+  <p
+    style={{
+      color: "#374151",
+      flex: 1,
+      margin: 0
+    }}
+  >
+    {post.content?.slice(0,120)}...
+  </p>
+
+  {post?.imageUrls?.[0] && (
+    <img
+      src={post.imageUrls[0]}
+      style={{
+        width: 70,
+        height: 70,
+        borderRadius: 8,
+        objectFit: "cover"
+      }}
+    />
+  )}
+
+</div>
 
         {/* 태그 */}
         {post.subCategory && (

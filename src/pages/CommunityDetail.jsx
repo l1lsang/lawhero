@@ -561,18 +561,19 @@ export default function CommunityDetail() {
   >
     {post.imageUrls.map((img, i) => (
       <img
-        key={i}
-        src={img}
-        alt={`post-${i}`}
-        style={{
-          width: "100%",
-          maxWidth: 600,
-          borderRadius: 12,
-          flexShrink: 0,
-          objectFit: "cover",
-          scrollSnapAlign: "center"
-        }}
-      />
+  key={i}
+  src={img}
+  alt={`post-${i}`}
+  onClick={() => window.open(img, "_blank")}
+  style={{
+    width: "100%",
+    maxWidth: 600,
+    borderRadius: 12,
+    objectFit: "contain",
+    cursor: "zoom-in",
+    background: "#F3F4F6"
+  }}
+/>
     ))}
   </div>
 )}
